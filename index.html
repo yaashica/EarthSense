@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EarthSense - Smart Earthing Monitoring</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<!-- =====================================================
+     AUTHENTICATION SECTION
+===================================================== -->
+
+<div id="authScreen" class="auth-screen">
+
+    <div class="auth-card">
+
+        <div class="auth-logo">
+            <div class="auth-logo-circle">
+                <i class="fa-solid fa-leaf"></i>
+            </div>
+
+            <div>
+                <h1>EarthSense</h1>
+                <p>Monitor Today | Safer Tomorrow</p>
+            </div>
+        </div>
+
+
+        <!-- LOGIN -->
+
+        <div id="loginForm">
+
+            <h2>Welcome Back</h2>
+
+            <p class="auth-subtitle">
+                Sign in to access your EarthSense dashboard
+            </p>
+
+
+            <label>Gmail ID</label>
+
+            <div class="input-box">
+
+                <i class="fa-regular fa-envelope"></i>
+
+                <input
+                    type="email"
+                    id="loginEmail"
+                    placeholder="example@gmail.com"
+                >
+
+            </div>
+
+
+            <label>Password</label>
+
+            <div class="input-box">
+
+                <i class="fa-solid fa-lock"></i>
+
+                <input
+                    type="password"
+                    id="loginPassword"
+                    placeholder="Enter your password"
+                >
+
+                <i class="fa-regular fa-eye password-eye"
+                   onclick="togglePassword('loginPassword', this)">
+                </i>
+
+            </div>
+
+
+            <button class="auth-button" onclick="login()">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                Login
+            </button>
+
+
+            <p id="loginMessage" class="auth-message"></p>
+
+
+            <div class="auth-switch">
+
+                Don't have an account?
+
+                <button onclick="showSignup()">
+                    Create Account
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- SIGN UP -->
+
+        <div id="signupForm" class="hidden">
+
+            <h2>Create Account</h2>
+
+            <p class="auth-subtitle">
+                Create your EarthSense monitoring account
+            </p>
+
+
+            <label>Gmail ID</label>
+
+            <div class="input-box">
+
+                <i class="fa-regular fa-envelope"></i>
+
+                <input
+                    type="email"
+                    id="signupEmail"
+                    placeholder="example@gmail.com"
+                >
+
+            </div>
+
+
+            <label>Create Password</label>
+
+            <div class="input-box">
+
+                <i class="fa-solid fa-lock"></i>
+
+                <input
+                    type="password"
+                    id="signupPassword"
+                    placeholder="Create a strong password"
+                    oninput="checkPassword()"
+                >
+
+                <i class="fa-regular fa-eye password-eye"
+                   onclick="togglePassword('signupPassword', this)">
+                </i>
+
+            </div>
+
+
+            <!-- PASSWORD RULES -->
+
+            <div class="password-rules">
+
+                <strong>Password Requirements</strong>
+
+                <div id="ruleLength">
+                    <i class="fa-solid fa-circle"></i>
+                    At least 16 characters
+                </div>
+
+                <div id="ruleUpper">
+                    <i class="fa-solid fa-circle"></i>
+                    At least one uppercase letter
+                </div>
+
+                <div id="ruleNumber">
+                    <i class="fa-solid fa-circle"></i>
+                    At least one number
+                </div>
+
+                <div id="ruleSymbol">
+                    <i class="fa-solid fa-circle"></i>
+                    At least one special symbol
+                </div>
+
+            </div>
+
+
+            <label>Confirm Password</label>
+
+            <div class="input-box">
+
+                <i class="fa-solid fa-lock"></i>
+
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    placeholder="Re-enter your password"
+                >
+
+            </div>
+
+
+            <button class="auth-button" onclick="signup()">
+
+                <i class="fa-solid fa-user-plus"></i>
+
+                Create Account
+
+            </button>
+
+
+            <p id="signupMessage" class="auth-message"></p>
+
+
+            <div class="auth-switch">
+
+                Already have an account?
+
+                <button onclick="showLogin()">
+                    Login
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     DASHBOARD APPLICATION
+===================================================== -->
+
+<div id="dashboardApp" class="dashboard-app hidden">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+
+            <div class="brand-circle">
+                <i class="fa-solid fa-leaf"></i>
+            </div>
+
+            <div>
+                <div class="brand-name">EarthSense</div>
+                <div class="brand-tagline">
+                    Monitor Today | Safer Tomorrow
+                </div>
+            </div>
+
+        </div>
+
+
+        <nav class="navigation">
+
+            <a href="#" class="nav-item active"
+               onclick="showPage('dashboard', this)">
+                <i class="fa-solid fa-house"></i>
+                <span>Dashboard</span>
+            </a>
+
+
+            <a href="#" class="nav-item"
+               onclick="showPage('live', this)">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Live Data</span>
+            </a>
+
+
+            <a href="#" class="nav-item"
+               onclick="showPage('trends', this)">
+                <i class="fa-solid fa-chart-column"></i>
+                <span>Trends</span>
+            </a>
+
+
+            <a href="#" class="nav-item"
+               onclick="showPage('alerts', this)">
+
+                <i class="fa-regular fa-bell"></i>
+
+                <span>Alerts</span>
+
+                <span class="alert-count">3</span>
+
+            </a>
+
+
+            <a href="#" class="nav-item"
+               onclick="showPage('reports', this)">
+                <i class="fa-solid fa-file-lines"></i>
+                <span>Reports</span>
+            </a>
+
+
+            <a href="#" class="nav-item"
+               onclick="showPage('settings', this)">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="leaf-large">
+                <i class="fa-solid fa-leaf"></i>
+            </div>
+
+            <p>
+                Reliable Grounding<br>
+                for a Safer Tomorrow
+            </p>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main-content">
+
+
+        <!-- HEADER -->
+
+        <header class="top-header">
+
+            <div class="header-title">
+
+                <div class="earthsense-logo">
+
+                    <div class="logo-circle">
+                        <i class="fa-solid fa-leaf"></i>
+                    </div>
+
+                    <div>
+                        <h2>EarthSense</h2>
+                        <span>
+                            Electrical Earthing Monitoring System
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="page-title">
+
+                    <h1 id="pageTitle">
+                        Earth Pit Monitoring <span>(MVP)</span>
+                    </h1>
+
+                    <p id="pageSubtitle">
+                        Real-time insights for reliable earthing systems
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="header-right">
+
+                <div class="date-time">
+
+                    <i class="fa-regular fa-calendar"></i>
+
+                    <div>
+
+                        <strong id="currentDate">
+                            15 Sep 2026
+                        </strong>
+
+                        <span id="currentTime">
+                            07:17:02
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="notification"
+                     onclick="showPage('alerts')">
+
+                    <i class="fa-regular fa-bell"></i>
+
+                    <span>3</span>
+
+                </div>
+
+
+                <div class="profile">
+
+                    <div class="profile-circle">
+                        U
+                    </div>
+
+                    <div>
+
+                        <strong id="userEmail">
+                            User
+                        </strong>
+
+                        <span>
+                            Electrical & Maintenance Engineer
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <button class="logout-btn"
+                        onclick="logout()">
+
+                    Logout
+
+                </button>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             PAGE CONTENT
+        ================================================= -->
+
+        <div id="pageContent">
+
+            <!-- DASHBOARD CONTENT WILL BE INSERTED HERE -->
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <footer>
+
+            <div>
+
+                <strong>EarthSense</strong>
+
+                <span>
+                    | Electrical Earthing Monitoring System
+                </span>
+
+            </div>
+
+
+            <div class="footer-note">
+
+                <i class="fa-solid fa-circle-info"></i>
+
+                <strong>
+                    Prototype / Laboratory Data
+                </strong>
+
+                <span>
+                    Thresholds are experimental and configurable.
+                    Values must be calibrated for the specific setup.
+                </span>
+
+            </div>
+
+
+            <span>
+                Building Safer Infrastructure
+            </span>
+
+        </footer>
+
+    </main>
+
+</div>
+
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
